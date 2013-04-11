@@ -9,6 +9,14 @@ Countly-Corona is a lua interface to Count.ly enabling you to use it in your Cor
 1. Corona-Countly uses [GGData](https://github.com/GlitchGames/GGData) to aid with disk caching when offline. Clone that repository and copy GGData.lua into a subdirectory of your Corona application called util.
 2. Copy countly.lua into the util directory as well
 
+When you are done, your files should look like this:
+
+Corona_Project
+|-util
+  |- GGData.lua
+  |- countly.lua
+|-main.lua
+
 ## Using The Countly Module
 
 First, import the countly module into main.lua
