@@ -44,10 +44,10 @@ local Countly = require("util.countly")
 Then use one of the following methods:
 
 `````lua
-function Countly:recordEventCount(key, count)
-function Countly:recordEventCountSum(key, count, sum)
-function Countly:recordEventCountSegmentation(key, count, segmentation)
-function Countly:recordEventCountSumSegmentation(key, count, sum, segmentation)
+Countly:recordEventCount(key, count)
+Countly:recordEventCountSum(key, count, sum)
+Countly:recordEventCountSegmentation(key, count, segmentation)
+Countly:recordEventCountSumSegmentation(key, count, sum, segmentation)
 `````
 
 Here is an example of each:
