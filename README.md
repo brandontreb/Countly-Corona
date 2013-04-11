@@ -11,11 +11,13 @@ Countly-Corona is a lua interface to Count.ly enabling you to use it in your Cor
 
 When you are done, your files should look like this:
 
+<pre>
 Corona_Project
 |-util
   |- GGData.lua
   |- countly.lua
 |-main.lua
+</pre>
 
 ## Using The Countly Module
 
