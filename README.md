@@ -2,6 +2,8 @@
 
 [Countly](http://count.ly) is a fantastic open source stat tracking application and a good alternative for those wishing to take control of their own statistical data produced from apps.
 
+Countly-Corona is a lua interface to Count.ly enabling you to use it in your Corona SDK applications.
+
 ## Getting Set Up
 
 1. Corona-Countly uses [GGData](https://github.com/GlitchGames/GGData) to aid with disk caching when offline. Clone that repository and copy GGData.lua into a subdirectory of your Corona application called util.
