@@ -59,36 +59,36 @@ local function cacheNetworkListener(event)
 end
 
 local function networkListener( event )
+  if ( event.isError ) then
+      if Countly.debug == true then
+        print( "Countly Network error caching!")                            
+      end
 
-        if ( event.isError ) then
-            if Countly.debug == true then
-              print( "Countly Network error caching!")                            
-            end
+      if cache.requests == nil then
+        cache.requests = {}
+      end
+      -- Cache the request with it's timestamp
+      table.insert(cache.requests, event.url .. "&timestamp=" .. socket.gettime()*1000)
+      cache:save()          
+  else
+    if Countly.debug == true then
+      print ( "Countly Response: " .. event.response )            
+    end
 
-            if cache.requests == nil then
-              cache.requests = {}
-            end
-            -- Cache the request with it's timestamp
-            table.insert(cache.requests, event.url .. "&timestamp=" .. socket.gettime()*1000)
-            cache:save()          
-        else
-          if Countly.debug == true then
-            print ( "Countly Response: " .. event.response )            
-          end
+    -- Flush the cache
+     if cache.requests ~= nil then
+      for i=1,#cache.requests do
+        url = cache.requests[i]
+        network.request( url, "GET", cacheNetworkListener )  
+      end
+      cache.requests = nil
+      cache:save()
+     end
 
-          -- Flush the cache
-           if cache.requests ~= nil then
-            for i=1,#cache.requests do
-              url = cache.requests[i]
-              network.request( url, "GET", cacheNetworkListener )  
-            end
-            cache.requests = nil
-            cache:save()
-           end
-
-        end
+  end
 end
 
+-- Needed to URL Encode JSON
 function escape(str)
   if (str) then
     str = string.gsub (str, "\n", "\r\n")
@@ -147,7 +147,6 @@ function Countly:recordEventCount(key, count)
   if Countly.debug == true then
     print("Countly Event Logged " .. key)
   end
-
   network.request( url, "GET", networkListener )
 
 end
@@ -214,8 +213,10 @@ local function cache_session_end()
   cache:save()
 end
 
+-- Hooks to start and stop Countly when the app starts or stops.  Since Corona
+-- won't allow network events when the system is shutting down, the end session event
+-- is cached and uploaded the next time the app is online.
 local function onSystemEvent( event )
-  
   if (event.type == "applicationExit") then
     if session_timer ~= nil then
       timer.cancel(session_timer)
